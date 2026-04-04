@@ -21,6 +21,7 @@ clean:
 
 fclean: clean
 	rm -f $(EXEC)
+	rm -f graph.png
 
 re: fclean all
 

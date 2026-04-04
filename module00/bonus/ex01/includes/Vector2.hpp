@@ -15,6 +15,8 @@ class	Vector2
 
 		float getX() const;
 		float getY() const;
+
+		bool operator>(const Vector2& other) const;
 };
 
 #endif

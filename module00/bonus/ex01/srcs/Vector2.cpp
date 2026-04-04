@@ -16,3 +16,11 @@ float Vector2::getX() const{
 float Vector2::getY() const{
 	return _y;
 };
+
+bool Vector2::operator>(const Vector2& other) const {
+	if (getY() > other.getY())
+		return true;
+	else if (getY() == other.getY() && getX() > other.getX())
+		return true;
+	return false;
+};

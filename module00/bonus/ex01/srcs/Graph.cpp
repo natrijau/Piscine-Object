@@ -1,7 +1,7 @@
 #include	"../includes/Graph.hpp"
 #include	<vector>
 
-Graph::Graph(size_t size, std::vector<Vector2*> list) : _size(size), _list(list){
+Graph::Graph(size_t size, std::vector<Vector2> list) : _size(size), _list(list){
 	//std::cout << "Graph created with size of " << size << "and " << std::endl;
 };
 
@@ -15,18 +15,122 @@ Graph::~Graph(){
 	//std::cout << "Graph deleted" << std::endl;
 };
 
-void	Graph::addVector(Vector2 *v){
+void	Graph::addVector(Vector2 v){
 	_list.push_back(v);
 	//std::cout << "Graph addVector" << v << " !" << std::endl;
 };
 
-std::vector<Vector2*>	Graph::getVector() const{
+void Graph::addLine(Vector2 start, Vector2 end)
+{
+    int x0 = static_cast<int>(start.getX());
+    int y0 = static_cast<int>(start.getY());
+
+    int x1 = static_cast<int>(end.getX());
+    int y1 = static_cast<int>(end.getY());
+
+    // Calcul distances
+    int dx = x1 - x0;
+    if (dx < 0)
+        dx = -dx;
+
+    int dy = y1 - y0;
+    if (dy < 0)
+        dy = -dy;
+
+    // Direction 
+    int stepX = (x0 < x1) ? 1 : (x0 > x1 ? -1 : 0);
+    int stepY = (y0 < y1) ? 1 : (y0 > y1 ? -1 : 0);
+
+    // Erreur de Bresenham
+    // savoir quand corriger la trajectoire
+    int error = dx - dy;
+
+    while (true)
+    {
+		_list.push_back(Vector2(x0, y0));
+
+        if (x0 == x1 && y0 == y1)
+            break;
+
+        // Pour eviter les float
+        int doubleError = 2 * error;
+
+        // step horizontal
+        if (doubleError > -dy)
+        {
+            error -= dy;
+            x0 += stepX;
+        }
+
+        // vertical
+        if (doubleError < dx)
+        {
+            error += dx;
+            y0 += stepY;
+        }
+    }
+};
+
+//void	Graph::addLine(Vector2 start, Vector2 end){
+//	Vector2 a = (start > end) ? end : start;
+//	Vector2 b = (start > end) ? start : end;
+
+//	std::cout << "a(x=" << static_cast<int>(a.getX()) << ", y=" << static_cast<int>(a.getY()) << ") - b(x=" << static_cast<int>(b.getX()) << ", y=" << static_cast<int>(b.getY()) << ")" << std::endl;
+//	int	x = static_cast<int>(a.getX());
+//	int	y = static_cast<int>(a.getY());
+
+//	// de combien on va devoir se deplacer en x et en y pour aller de a a b
+//	int	deltaX = static_cast<int>(b.getX()) - static_cast<int>(a.getX());
+//	int	deltaY = static_cast<int>(b.getY()) - static_cast<int>(a.getY());
+//	std::cout << "deltaX: " << deltaX << ", deltaY: " << deltaY << std::endl;
+
+//	// positif ou negatif suivant la direction de la ligne
+//	// vers la gauche x sera negatif, vers la droite x sera positif, vers le haut y sera positif, vers le bas y sera negatif
+//	int	directionX = (deltaX > 0) ? 1 : (deltaX < 0 ? -1 : 0);
+//	int	directionY = (deltaY > 0) ? 1 : (deltaY < 0 ? -1 : 0);
+//	std::cout << "directionX: " << directionX << ", directionY: " << directionY << std::endl;
+
+//	// on prend la valeur absolue de deltaX et deltaY pour le calcul de l'erreur
+//	// l'erreur correspond a la marge d'erreur ( si plus proche de la ligne que de la case suivante, on avance dans la direction de la ligne, sinon on avance dans la direction perpendiculaire)
+//	// cest un peu comme un dda, on avance dans la direction de la ligne, et on corrige l'erreur en fonction de la distance a la ligne
+//	int	erreur = deltaX - deltaY;
+//	std::cout << "erreur initiale: " << erreur << std::endl;
+
+//	while (x != static_cast<int>(b.getX()) || y != static_cast<int>(b.getY())) {
+//		if(y > int(getSize()) || x > int(getSize()) || int(y) < 0 || int(x) < 0)
+//			break;
+//		std::cout << "Plotting point at (" << x << ", " << y << ")" << std::endl;
+//		_list.push_back(Vector2(x,y));
+
+//		// on double l'erreur pour eviter les divisions et les flottants, on compare l'erreur a deltaX et deltaY pour savoir dans quelle direction avancer
+//		// si l'erreur est negative, on avance dans la direction de la ligne, sinon on avance dans la direction perpendiculaire
+//		int	doubleErreur = 2 * erreur;
+//		std::cout << "doubleErreur: " << doubleErreur << std::endl;
+//		if (doubleErreur < 0){
+//			if (-doubleErreur > -deltaY) {
+//				erreur -= deltaY;
+//				x += directionX;
+//			}
+//		}
+//		else if (doubleErreur > -deltaY) {
+//			erreur -= deltaY;
+//			x += directionX;
+//		}
+
+//		// 
+//		if (doubleErreur < deltaX) {
+//			erreur += deltaX;
+//			y += directionY;
+//		}
+//	}
+
+//	_list.push_back(Vector2(x,y));
+//};
+
+std::vector<Vector2>	Graph::getVector() const{
 	return _list;
 };
 
-//std::vector<std::string>	Graph::getTabl() const{
-//	return _toPrint;
-//};
 
 size_t	Graph::getSize() const{
 	return _size;
@@ -34,30 +138,32 @@ size_t	Graph::getSize() const{
 
 bool	Graph::pointVector(size_t y) const{
 	for (size_t i = 0; i < _list.size(); i++){
-		if (getSize() - _list[i]->getY() == y)
+		if (getSize() - _list[i].getY() == y)
 			return true;
 	}
 	return false;
 };
 
-//std::string Graph::getLineGraph(size_t y) const{
-//	std::string str;
+void	Graph::loadFile(const std::string& filename){
+	std::ifstream file(filename.c_str());
+	if (!file.is_open())
+		throw	std::runtime_error("Cant open file");
 
-//	for(size_t i = 0; i <= getSize(); i++)
-//		str += "- ";
+	std::string line;
+	while(std::getline(file, line)){
+		float x, y;
+		std::istringstream iss(line);
+		if (iss >> x >> y)
+			_list.push_back(Vector2(x, y));
+		else
+			throw std::runtime_error("Invalid file format. Each line must contain two numbers.");
+	};
 
-//	size_t index;
-//	for(index = 0; index <= getSize(); index++){
-//		for(size_t i = 0; i < _list.size(); i++){
-//			Vector2 *test = _list[i];
-			
-//			if( test->getX() == (getSize() - y) && test->getY() == index ){
-//				str[index * 2] = 'X';
-//			}
-//		}
-//	}
-//	return str;
-//};
+	// le format du fichier doit etre :
+	// x y
+	file.close();
+};
+
 std::string Graph::getLineGraph(size_t y) const {
 	// Calcule la largeur nécessaire pour afficher les indices
 	int width = 1;
@@ -75,8 +181,8 @@ std::string Graph::getLineGraph(size_t y) const {
 	// Place les "X" aux bonnes positions
 	for (size_t x = 0; x <= getSize(); x++) {
 		for (size_t i = 0; i < _list.size(); i++) {
-			int vecX = static_cast<int>(_list[i]->getX());
-			int vecY = static_cast<int>(_list[i]->getY());
+			int vecX = static_cast<int>(_list[i].getX());
+			int vecY = static_cast<int>(_list[i].getY());
 
 			if (vecX == static_cast<int>(x) && vecY == static_cast<int>(getSize() - y)) {
 				for (int k = 0; k < width; k++)
@@ -135,66 +241,46 @@ void Graph::printMap() const {
         std::cout << toPrint[i] << std::endl;
 };
 
-void Graph::saveAsPPM(const std::string& filename, int scale) const {
-    // Taille de l'image (en pixels)
-    const unsigned width = (getSize() + 1) * scale;
-    const unsigned height = (getSize() + 1) * scale;
+void Graph::saveAsPPM(const std::string& filename, size_t scale) const {
+	if( scale < 10 )
+		scale = 10;
 
-    // Crée une image vide (3 canaux : RGB)
-    std::vector<unsigned char> image;
-    image.resize(width * height * 3, 255); // Fond blanc par défaut
+    size_t width = (getSize() + 1) * scale;
+    size_t height = (getSize() + 1) * scale;
 
-    // Dessine la grille et les points
-    for (unsigned y = 0; y < height; y++) {
-        for (unsigned x = 0; x < width; x++) {
-            unsigned i = 3 * width * y + 3 * x; // Index du pixel
+	std::cout << "width=" << width << ", height=" << height << ", scale=" << scale << std::endl;
 
-            // Dessine les lignes de la grille
-            if (x % scale == 0 || y % scale == 0)
-                image[i] = image[i + 1] = image[i + 2] = 200; // Gris clair pour les lignes
+	std::cout << "On creer une map pour les vector2 qui constituent la ligne " << std::endl;
+	// map des element de _list pour eviter de faire une boucle dans le vector2 pour chaque pixel, teste et tres lent!  surtout pour les grandes tailles de graph (100 et +) 
 
-            // Dessine les points (vecteurs)
-            size_t gridX = x / scale;
-            size_t gridY = getSize() - (y / scale);
-            for (size_t vecIdx = 0; vecIdx < _list.size(); vecIdx++) {
-                int vecX = static_cast<int>(_list[vecIdx]->getX());
-                int vecY = static_cast<int>(_list[vecIdx]->getY());
+	std::vector<unsigned char> image(width * height * 3, 255);
+	std::map<std::pair<int,int>, bool> pointsMap;
+	size_t idx;
+	for ( idx = 0; idx < _list.size(); ++idx) {
+        int x = _list[idx].getX();
+        int y = _list[idx].getY();
+        pointsMap[std::make_pair(x, y)] = true;
+    }
 
-                if (vecX == static_cast<int>(gridX) && vecY == static_cast<int>(gridY)) {
-                    image[i] = 255;     // Rouge
-                    image[i + 1] = 0;
-                    image[i + 2] = 0;
-                }
-            }
+	std::cout << "Drqwing points in the image..." << std::endl;
+    for (size_t y = 0; y < height; ++y) {
+		for (size_t x = 0; x < width; ++x) {
+            size_t i = (y * width + x) * 3;
+			if (pointsMap.find(std::make_pair(x / scale, getSize() - (y / scale))) != pointsMap.end()) {
+				image[i] = 255;
+				image[i + 1] = 0;
+				image[i + 2] = 0;
+			}
         }
     }
 
     // Écriture du fichier PPM
     std::ofstream ofs(filename.c_str(), std::ios::binary);
     if (!ofs) {
-        std::cerr << "Erreur : impossible d'ouvrir le fichier " << filename << std::endl;
+        std::cerr << "Error: Could not open file " << filename << std::endl;
         return;
     }
 
-    // En-tête du fichier PPM
     ofs << "P6\n" << width << " " << height << "\n255\n";
     ofs.write(reinterpret_cast<const char*>(&image[0]), image.size());
-}
-//void	Graph::printMap() const{
-//	std::vector<std::string> toPrint;
-//	std::string strFinal = "&   ";
-
-//	for (size_t i = 0; i <= getSize(); i++)
-//		strFinal +=  intToString(i) + " ";
-	
-//	for (size_t y = 0; y <= getSize(); y++){
-//		toPrint.push_back(("& " + intToString((getSize() - y))) + " " + getLineGraph(y));
-//		if(y == getSize()){
-//			toPrint.push_back(strFinal);
-//			break;
-//		}
-//	}
-	
-//	for (size_t i = 0; i < toPrint.size(); i++)
-//		std::cout << toPrint[i] << std::endl;
-//};
+};

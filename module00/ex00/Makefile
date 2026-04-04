@@ -1,4 +1,4 @@
-EXEC = DivideAndRule
+NAME = DivideAndRule
 CXX = g++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 OBJDIR = obj
@@ -7,20 +7,20 @@ INCDIR = includes
 SRC = main.cpp $(SRCDIR)/Bank.cpp $(SRCDIR)/Account.cpp 	
 OBJ = $(SRC:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-$(EXEC): $(OBJ)
+$(NAME): $(OBJ)
 	$(CXX) $(CXXFLAGS) $(OBJ) -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(INCDIR)
 	@mkdir -p $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-all: $(EXEC)
+all: $(NAME)
 
 clean:
 	rm -rf $(OBJDIR)
 
 fclean: clean
-	rm -f $(EXEC)
+	rm -f $(NAME)
 
 re: fclean all
 
