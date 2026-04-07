@@ -10,12 +10,13 @@ class	Account
 {
 	private:
 		const size_t	_id;
-		float _balanceAccount;
+		float 			_balance;
+		float			_credit;
 
-		void	deposit(float value);
+		void	deposit(float value, bool isCredit);
 		void	withdraw(float value);
 
-		Account(float value);
+		Account(size_t id, float value);
 
 		friend class Bank; 
 
@@ -23,7 +24,7 @@ class	Account
 		~Account();
 
 		size_t getId() const;
-		float getValue() const;
+		float getBalance() const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Account& account);

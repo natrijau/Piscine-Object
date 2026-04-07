@@ -48,7 +48,7 @@ static	std::pair<Vector2, Vector2> addPair(Graph &graph) {
 
 	Vector2 start = Vector2(startX, startY);
 	Vector2 end = Vector2(endX, endY);
-	
+
 	return std::pair<Vector2, Vector2>(start, end);
 };
 
@@ -71,7 +71,7 @@ static void lineRequest(Graph &graph){
 				return;
 			std::pair<Vector2, Vector2> line = addPair(graph);
 			graph.addLine(line.first, line.second);
-			graph.saveAsPPM("graph.png", graph.getSize());
+			//graph.saveAsPPM("graph.png", graph.getSize());
 			graph.printMap();
 		}
 		else
@@ -101,8 +101,8 @@ static void pointRequest(Graph &graph) {
 
 			Vector2 point = Vector2(x, y);
 			graph.addVector(point);
-			graph.saveAsPPM("graph.png", graph.getSize());
-			graph.printMap();
+			//graph.saveAsPPM("graph.png", graph.getSize());
+			//graph.printMap();
 		}
 		else
 			break;
@@ -128,7 +128,7 @@ void fileRequest(Graph &graph) {
 			std::string filename;
 			std::cout << "Enter filename: ";
 			std::cin >> filename;
-	
+
 			if (inputFailed())
 				return;
 			if (filename.empty()) {
@@ -138,7 +138,7 @@ void fileRequest(Graph &graph) {
 			if (filename.size() < 4 || filename.substr(filename.size() - 4) != ".txt") {
 				std::cout << "Invalid file format! Please enter a .txt file." << std::endl;
 				continue;
-			}	
+			}
 			try {
 				graph.loadFile(filename);
 				graph.saveAsPPM("graph.png", graph.getSize());

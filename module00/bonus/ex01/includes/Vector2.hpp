@@ -6,8 +6,10 @@
 class	Vector2
 {
 	private:
-		const float _x;
-		const float _y;
+		//const float _x;
+		//const float _y;
+		float _x;
+		float _y;
 
 	public:
 		Vector2(float x, float y);

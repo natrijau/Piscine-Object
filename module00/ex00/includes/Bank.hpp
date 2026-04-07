@@ -9,27 +9,28 @@ class	Account;
 
 class Bank {
 	private:
-		float _liquidity;
-		std::vector<Account *> _clients;
+		float					_liquidity;
+		size_t					_nextId;
+		std::vector<Account *> 	_clients;
 
 		Account*	_findAccount(size_t id);
+	
 	public:
 		Bank();
 		Bank(float liquidity);
 		~Bank();
+		
+		size_t createAccount(float nb);
+		void deleteAccount(size_t id);
+		void updateAccount(size_t id, float nb);
+		
+		void bankCredit(size_t id, float credit);
 
 		bool updateLiquidity(float nb);
 
-		Account* creatAccount(float nb);
-		void deleteAccount(size_t id);
-
-		void updateAccount(size_t id, float nb);
-		void bankCredit(size_t id, float credit);
-
 		float getLiquidity() const;
-		const std::vector<Account *>& getClients() const;
-};
 
-std::ostream& operator<<(std::ostream& os, const Bank& bank);
+		friend std::ostream& operator<<(std::ostream& os, const Bank& bank);
+};
 
 #endif
