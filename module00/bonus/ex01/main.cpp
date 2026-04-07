@@ -173,7 +173,6 @@ static void initGraph(){
 			std::cout << "Size too large! Please enter a value less than or equal to 150." << std::endl;
 			continue;
 		}
-
 		break;
 	}
 

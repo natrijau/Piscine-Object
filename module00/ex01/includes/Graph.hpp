@@ -3,6 +3,7 @@
 
 #include	<vector>
 #include	<iostream>
+#include	<sstream>
 #include	"./Vector2.hpp"
 
 // Ajoute l'inclusion pour LodePNG
@@ -11,27 +12,22 @@
 
 class Graph {
 	private:
-		size_t _size;
-		std::vector<Vector2*> _list;
-		//std::vector<std::string> _toPrint;
-
-	public:
-		Graph(size_t size, std::vector<Vector2*> list);
-		Graph(size_t size);
-		~Graph();
-
-		void	addVector(Vector2 *);
-		std::vector<Vector2*>	getVector() const;
-		//std::vector<std::strikng>	getTabl() const;
-		size_t	getSize() const;
+		Vector2 _size;
+		std::vector<Vector2> _list;
 
 		std::string getLineGraph(size_t y) const;
-		bool	pointVector(size_t y) const;
-		void	printMap() const;
+	public:
+		Graph(Vector2 size);
+		~Graph();
 
-		void 	saveAsPPM(const std::string& filename, int scale) const;
+		void	addVector(Vector2);
+
+		std::vector<Vector2>	getVector() const;
+		Vector2	getSize() const;
+
+		void	printMap() const;
 };
 
-std::ostream& operator<<(std::ostream& os, const Graph& graph);
+//std::ostream& operator<<(std::ostream& os, const Graph& graph);
 
 #endif
