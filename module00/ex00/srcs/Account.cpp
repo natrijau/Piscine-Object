@@ -1,13 +1,13 @@
 #include	"../includes/Account.hpp"
 
 Account::Account(size_t id, float value) : _id(id), _balance(value), _credit(0){
-	//std::cout << "Account created" << std::endl;
-	//std::cout << *this << std::endl << std::endl;
+	std::cout << "Account created" << std::endl;
+	std::cout << *this << std::endl << std::endl;
 };
 
 Account::~Account(){
-	//std::cout << "Delete Account" << std::endl;
-	//std::cout << *this << std::endl << std::endl;
+	std::cout << "Delete Account" << std::endl;
+	std::cout << *this << std::endl << std::endl;
 };
 
 size_t Account::getId() const{
@@ -16,6 +16,10 @@ size_t Account::getId() const{
 
 float Account::getBalance() const{
 	return _balance;
+};
+
+float Account::getCredit() const{
+	return _credit;
 };
 
 void Account::deposit(float value, bool isCredit){
@@ -39,6 +43,6 @@ void Account::withdraw(float value){
 };
 
 std::ostream& operator<<(std::ostream& os, const Account& account){
-	os << "id : [" << account.getId() << "] - liquidity : [" << account.getBalance() << "]";
+	os << "id : [" << account.getId() << "] - balance : [" << account.getBalance() << "] - credit : [" << account.getCredit() << "]";
 	return (os);
 };

@@ -25,6 +25,7 @@ class	Account
 
 		size_t getId() const;
 		float getBalance() const;
+		float getCredit() const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Account& account);

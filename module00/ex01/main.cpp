@@ -154,7 +154,6 @@ static bool initGraph(){
 };
 
 int main(){
-
 	bool needVector = true;
 	while(needVector){
 		needVector = initGraph();

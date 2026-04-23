@@ -26,10 +26,6 @@ class Bank {
 		
 		void bankCredit(size_t id, float credit);
 
-		bool updateLiquidity(float nb);
-
-		float getLiquidity() const;
-
 		friend std::ostream& operator<<(std::ostream& os, const Bank& bank);
 };
 

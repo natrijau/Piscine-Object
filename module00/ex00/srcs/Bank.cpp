@@ -3,11 +3,11 @@
 class Account;
 
 Bank::Bank() : _liquidity(0), _nextId(0){
-	std::cout << "Bank created. Liquidity : " << _liquidity << std::endl << std::endl;
+	std::cout << "Bank created\nLiquidity : " << _liquidity << std::endl << std::endl;
 };
 
 Bank::Bank(float liquidity) : _liquidity(liquidity), _nextId(0){
-	std::cout << "Bank created. Liquidity : " << liquidity << std::endl << std::endl;
+	std::cout << "Bank created\nLiquidity : " << liquidity << std::endl << std::endl;
 };
 
 Account* Bank::_findAccount(size_t id) {
@@ -25,16 +25,9 @@ Bank::~Bank(){
 	std::cout << "Delete Bank" << std::endl << std::endl;
 };
 
-bool Bank::updateLiquidity(float nb){
-	if (this->_liquidity - nb < 0)
-		return false;
-	this->_liquidity -= nb;
-	return true;
-};
-
 size_t	Bank::createAccount(float nb){
 	if(nb < 0){
-		std::cout << "Cannot create account with negative value" << std::endl;
+		std::cout << "Cannot create account with negative value"<< std::endl;
 		return -1;
 	}
 	float taxe = nb * 0.05f;
@@ -87,15 +80,12 @@ void Bank::bankCredit(size_t id, float credit){
 	if (!account)
 		return;
 	account->deposit(credit, true);
+	std::cout << "Client [" << id << "] - credit [" << account->getCredit() << "]" << std::endl; 
 	_liquidity -= credit;
 };
 
-float Bank::getLiquidity() const {
-	return _liquidity;
-}
-
 std::ostream& operator<<(std::ostream& os, const Bank& bank) {
-	os << "Bank [Liquidity: " << bank.getLiquidity() << "]" << std::endl << std::endl;
+	os << "Bank [Liquidity: " << bank._liquidity << "]" << std::endl << std::endl;
 	os << "Accounts:" << std::endl;
 	const std::vector<Account*>& clients = bank._clients;
 	for (size_t i = 0; i < clients.size(); ++i)
